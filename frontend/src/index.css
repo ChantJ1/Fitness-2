@@ -148,19 +148,20 @@ form.login {
 
 /* Adjust button styling within workout-details */
 .workout-details button,
-.form-button {
+.form-button,
+.toggle-form-button {
   background: var(--primary); /* Use primary color for button background */
   color: #fff; /* White text color */
   border: none; /* No border */
-  padding: 8px; /* Adequate padding */
-  border-radius: 4px; /* Rounded corners */
+  padding: 7px; /* Adequate padding */
+  border-radius: 8px; /* Rounded corners */
   cursor: pointer; /* Cursor pointer on hover */
   display: inline-flex; /* Inline-flex display to keep buttons in line */
   align-items: center; /* Align items in the center */
   justify-content: center; /* Center content */
   gap: 5px; /* Gap between icon and text (if any) */
   font-family: "Poppins", sans-serif; /* Font family */
-  font-size: 0.9em; /* Font size */
+  font-size: 1em; /* Font size */
   margin: 5px; /* Add margin to create space around buttons */
   transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
