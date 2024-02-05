@@ -1,0 +1,205 @@
+/* google font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
+
+/* layout */
+:root {
+  --primary: #007bff; /* Changed to a nice shade of blue */
+  --error: #dc3545; /* Updated to a more standard red */
+}
+body {
+  background: #e9ecef; /* A lighter grey for the background */
+  margin: 0;
+  font-family: "Poppins";
+}
+header {
+  background: #f8f9fa; /* A lighter header background */
+}
+header .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header a {
+  color: #343a40; /* A darker grey for contrast */
+  text-decoration: none;
+}
+.pages {
+  max-width: 1400px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  margin: 0 auto;
+}
+
+/* homepage */
+
+.home {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 100px;
+}
+.workout-details {
+  background: #fff;
+  border-radius: 4px;
+  margin: 20px auto;
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Slightly darker shadow for more depth */
+}
+.workout-details h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: var(--primary); /* Keeps the new primary color */
+}
+.workout-details p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #6c757d; /* A soft grey for text */
+}
+.workout-details span {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background: #f8f9fa; /* Matching the header background */
+  padding: 6px;
+  border-radius: 50%;
+  color: #343a40; /* A darker grey for icons */
+}
+
+/* new workout form */
+label,
+input {
+  display: block;
+}
+input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ced4da; /* A soft border color */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+form button {
+  background: var(--primary); /* Uses the new primary color */
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+div.error {
+  padding: 10px;
+  background: #f8d7da; /* A lighter red for error backgrounds */
+  border: 1px solid var(--error); /* Error color for border */
+  color: var(--error); /* Error color for text */
+  border-radius: 4px;
+  margin: 20px 0;
+}
+input.error {
+  border: 1px solid var(--error); /* Error color for border */
+}
+
+/* navbar */
+nav {
+  display: flex;
+  align-items: center;
+}
+nav a,
+nav button {
+  margin-left: 10px;
+}
+nav button {
+  background: #fff;
+  color: var(--primary); /* Primary color for text */
+  border: 2px solid var(--primary); /* Primary color for border */
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: "Poppins";
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.home-button {
+  /* padding-right: 20px; */
+  color: #343a40;
+  transition: 100ms;
+}
+
+.home-button:hover {
+  transform: scale(110%);
+}
+
+/* auth forms */
+form.signup,
+form.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+/* Adjust button styling within workout-details */
+.workout-details button,
+.form-button {
+  background: var(--primary); /* Use primary color for button background */
+  color: #fff; /* White text color */
+  border: none; /* No border */
+  padding: 8px; /* Adequate padding */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Cursor pointer on hover */
+  display: inline-flex; /* Inline-flex display to keep buttons in line */
+  align-items: center; /* Align items in the center */
+  justify-content: center; /* Center content */
+  gap: 5px; /* Gap between icon and text (if any) */
+  font-family: "Poppins", sans-serif; /* Font family */
+  font-size: 0.9em; /* Font size */
+  margin: 5px; /* Add margin to create space around buttons */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.workout-details button:hover,
+.form-button:hover {
+  background-color: #0056b3; /* Slightly darker shade for hover effect, replace with your preferred color */
+}
+
+.workout-details svg {
+  /* Adjusting SVG icon size and color */
+  width: 20px; /* Set the icon size */
+  height: 20px; /* Set the icon size */
+  color: #fff; /* Icon color */
+}
+
+/* Specific styling for Cancel and Delete buttons to differentiate */
+.workout-details button.cancel,
+.workout-details button.delete {
+  background: var(--error); /* Use error color for background */
+}
+
+.workout-details button.cancel:hover,
+.workout-details button.delete:hover {
+  background-color: #c82333; /* Slightly darker shade for hover effect, replace with your preferred color */
+}
+
+/* Progress chart */
+/* Progress chart */
+/* Add this to your existing CSS */
+.progress-chart-container {
+  width: 50%;
+  margin-right: auto; /* Center align the container horizontally */
+  max-width: 600px; /* Set a maximum width if needed */
+}
+
+.progress-chart {
+  width: 50%; /* Set the width to 50% */
+  height: auto; /* Let the height adjust automatically */
+  margin: 0 auto; /* Center align the chart horizontally */
+  max-width: 600px; /* Set a maximum width if needed */
+}
