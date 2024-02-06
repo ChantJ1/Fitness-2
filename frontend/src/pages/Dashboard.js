@@ -1,21 +1,19 @@
-// BETA TEST
-
-import { useEffect } from "react";
+// Dashboard.js
+import React, { useEffect } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useFriends } from "../hooks/useFriends"; // Import useFriends hook
 
-// Existing components
+// Components
 import WorkoutDetails from "../components/WorkoutDetails";
 import WorkoutForm from "../components/WorkoutForm";
-
-// // New components for the dashboard
+import FriendsList from "../components/FriendsList"; // Import FriendsList component
 import ProgressChart from "../components/ProgressCharts";
-// import GoalTracker from "../components/GoalTracker";
-// import Recommendations from "../components/Recommendations";
 
 const Dashboard = () => {
   const { workouts, dispatch } = useWorkoutsContext();
   const { user } = useAuthContext();
+  const { friends, isLoading } = useFriends(); // Use the useFriends hook
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -41,6 +39,13 @@ const Dashboard = () => {
         <div className="dashboard-widgets">
           <div className="progress-chart-container">
             <ProgressChart className="progress-chart" />
+          </div>
+          <div className="dashboard-friends">
+            {isLoading ? (
+              <div>Loading friends...</div>
+            ) : (
+              <FriendsList friends={friends} />
+            )}
           </div>
         </div>
       </section>

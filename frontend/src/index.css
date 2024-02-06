@@ -9,7 +9,7 @@
 body {
   background: #e9ecef; /* A lighter grey for the background */
   margin: 0;
-  font-family: "Poppins";
+  font-family: "Poppins", sans-serif; /* Ensure font consistency */
 }
 header {
   background: #f8f9fa; /* A lighter header background */
@@ -35,76 +35,15 @@ header a {
   margin: 0 auto;
 }
 
-/* homepage */
-
-.home {
+/* Adjustments for dashboard-widgets to layout ProgressChart and FriendsList */
+.dashboard-widgets {
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
-}
-.workout-details {
-  background: #fff;
-  border-radius: 4px;
-  margin: 20px auto;
-  padding: 20px;
-  position: relative;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Slightly darker shadow for more depth */
-}
-.workout-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
-  color: var(--primary); /* Keeps the new primary color */
-}
-.workout-details p {
-  margin: 0;
-  font-size: 0.9em;
-  color: #6c757d; /* A soft grey for text */
-}
-.workout-details span {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background: #f8f9fa; /* Matching the header background */
-  padding: 6px;
-  border-radius: 50%;
-  color: #343a40; /* A darker grey for icons */
+  grid-template-columns: 2fr 1fr; /* Adjusted to have two columns, with more space for the ProgressChart */
+  gap: 20px; /* Adjust gap as needed */
+  align-items: start; /* Align items at the start of each row */
 }
 
-/* new workout form */
-label,
-input {
-  display: block;
-}
-input {
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  width: 100%;
-  border: 1px solid #ced4da; /* A soft border color */
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-form button {
-  background: var(--primary); /* Uses the new primary color */
-  border: 0;
-  color: #fff;
-  padding: 10px;
-  font-family: "Poppins";
-  border-radius: 4px;
-  cursor: pointer;
-}
-div.error {
-  padding: 10px;
-  background: #f8d7da; /* A lighter red for error backgrounds */
-  border: 1px solid var(--error); /* Error color for border */
-  color: var(--error); /* Error color for text */
-  border-radius: 4px;
-  margin: 20px 0;
-}
-input.error {
-  border: 1px solid var(--error); /* Error color for border */
-}
+/* Rest of the original CSS for homepage, workout details, form elements, etc., as provided */
 
 /* navbar */
 nav {
@@ -126,8 +65,11 @@ nav button {
   font-size: 1em;
 }
 
+.nav-page-container {
+  padding-right: 50px;
+}
+
 .home-button {
-  /* padding-right: 20px; */
   color: #343a40;
   transition: 100ms;
 }
@@ -167,12 +109,12 @@ form.login {
 }
 
 .workout-details button:hover,
-.form-button:hover {
-  background-color: #0056b3; /* Slightly darker shade for hover effect, replace with your preferred color */
+.form-button:hover,
+.toggle-form-button:hover {
+  background-color: #0056b3; /* Slightly darker shade for hover effect */
 }
 
 .workout-details svg {
-  /* Adjusting SVG icon size and color */
   width: 20px; /* Set the icon size */
   height: 20px; /* Set the icon size */
   color: #fff; /* Icon color */
@@ -186,21 +128,133 @@ form.login {
 
 .workout-details button.cancel:hover,
 .workout-details button.delete:hover {
-  background-color: #c82333; /* Slightly darker shade for hover effect, replace with your preferred color */
+  background-color: #c82333; /* Slightly darker shade for hover effect */
 }
 
-/* Progress chart */
-/* Progress chart */
-/* Add this to your existing CSS */
-.progress-chart-container {
-  width: 50%;
-  margin-right: auto; /* Center align the container horizontally */
-  max-width: 600px; /* Set a maximum width if needed */
+/* Progress chart adjustments are integrated into the .dashboard-widgets styles */
+
+/* auth forms */
+form.signup,
+form.login {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow for depth */
 }
 
-.progress-chart {
-  width: 50%; /* Set the width to 50% */
-  height: auto; /* Let the height adjust automatically */
-  margin: 0 auto; /* Center align the chart horizontally */
-  max-width: 600px; /* Set a maximum width if needed */
+/* Specific input styling for auth forms to override any global styles */
+form.signup input,
+form.login input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ced4da; /* A soft border color */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Button styling specific to auth forms, to ensure consistency */
+form.signup button,
+form.login button {
+  width: 100%; /* Ensure button width matches input fields */
+  padding: 10px 0; /* Adequate padding */
+  margin-top: 10px; /* Space above button */
+  background: var(--primary); /* Primary color for background */
+  color: #fff; /* Text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Match input field border radius */
+  cursor: pointer; /* Cursor change to indicate clickable */
+  font-family: "Poppins", sans-serif; /* Consistent font family */
+  font-size: 1em; /* Appropriate font size */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+}
+
+form.signup button:hover,
+form.login button:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
+}
+
+/* Additional specific styles for error messages or other form elements can be added here */
+
+/* Workout details */
+.workout-details {
+  background: #fff;
+  border-radius: 4px;
+  margin: 20px 0; /* Adjust margin as needed */
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Slightly darker shadow for more depth */
+}
+
+.workout-details h4 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+  color: var(--primary); /* Keeps the new primary color */
+}
+
+.workout-details p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #6c757d; /* A soft grey for text */
+}
+
+.workout-details span {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background: #f8f9fa; /* Matching the header background */
+  padding: 6px;
+  border-radius: 50%;
+  color: #343a40; /* A darker grey for icons */
+}
+
+/* New workout form */
+label,
+input,
+textarea, /* If your form uses textarea for larger inputs */
+select {
+  /* If your form uses select elements */
+  display: block;
+  width: 100%; /* Ensures inputs take full width */
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ced4da; /* A soft border color */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+form button {
+  width: 100%; /* Matches input fields for a consistent look */
+  background: var(--primary); /* Uses the new primary color */
+  border: none;
+  color: #fff;
+  padding: 10px 0;
+  font-family: "Poppins", sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+form button:hover {
+  background-color: #0056b3; /* Slightly darker shade for hover effect */
+}
+
+/* Error styling */
+div.error,
+input.error {
+  color: var(--error); /* Error text color */
+  border-color: var(--error); /* Error border color for inputs */
+}
+
+div.error {
+  padding: 10px;
+  background: #f8d7da; /* A lighter red for error backgrounds */
+  border: 1px solid var(--error); /* Maintains error color for border */
+  border-radius: 4px;
+  margin: 20px 0;
 }

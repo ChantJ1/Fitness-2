@@ -19,12 +19,14 @@ const Navbar = () => {
         <nav>
           {user && (
             <>
-              <Link className="nav-link" to="/home">
-                Home
-              </Link>
-              <Link className="nav-link" to="/friends">
-                Friends
-              </Link>{" "}
+              <div className="nav-page-container">
+                <Link className="nav-link" to="/home">
+                  Home
+                </Link>
+                <Link className="nav-link" to="/friends">
+                  Friends
+                </Link>
+              </div>{" "}
               {/* Add this line */}
               <span>{user.username}</span>
               <button onClick={handleClick}>Log out</button>
