@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(
   cors({
     // Adjust the origin according to where your frontend is hosted
-    origin: "*", // For development, you might use '*' for allowing any origin or specify your frontend app's URL for production
+    origin: "http://localhost:3000", // For development, you might use '*' for allowing any origin or specify your frontend app's URL for production
     methods: ["GET", "POST", "DELETE", "PUT"], // Add any other HTTP methods your app uses
   })
 );

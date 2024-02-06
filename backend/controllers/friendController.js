@@ -79,3 +79,26 @@ exports.rejectFriendRequest = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+// Function to get a user's friends
+// Function to get a user's friends
+exports.getFriends = async (req, res) => {
+  const userId = req.user._id; // Assuming you're using authentication middleware
+
+  try {
+    // Retrieve the user's friends based on their ID
+    const user = await User.findById(userId).populate("friends");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // Extract the friends from the user object
+    const friends = user.friends || [];
+
+    res.status(200).json({ friends });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};

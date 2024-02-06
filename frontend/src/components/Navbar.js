@@ -16,24 +16,29 @@ const Navbar = () => {
         <Link to="/">
           <h1>Workout Stats</h1>
         </Link>
-        {user && (
-          <Link className="home-button" to="/home">
-            Home
-          </Link>
-        )}
-
         <nav>
           {user && (
-            <div>
+            <>
+              <Link className="nav-link" to="/home">
+                Home
+              </Link>
+              <Link className="nav-link" to="/friends">
+                Friends
+              </Link>{" "}
+              {/* Add this line */}
               <span>{user.username}</span>
               <button onClick={handleClick}>Log out</button>
-            </div>
+            </>
           )}
           {!user && (
-            <div>
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Signup</Link>
-            </div>
+            <>
+              <Link className="nav-link" to="/login">
+                Login
+              </Link>
+              <Link className="nav-link" to="/signup">
+                Signup
+              </Link>
+            </>
           )}
         </nav>
       </div>
