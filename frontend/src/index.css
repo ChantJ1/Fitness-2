@@ -141,7 +141,8 @@ form.login {
   padding: 20px;
   background: #fff;
   border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow for depth */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* optional: add a subtle shadow for depth; */
 }
 
 /* Specific input styling for auth forms to override any global styles */
@@ -223,7 +224,6 @@ select {
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 20px;
-  border: 1px solid #ced4da; /* A soft border color */
   border-radius: 4px;
   box-sizing: border-box;
 }
