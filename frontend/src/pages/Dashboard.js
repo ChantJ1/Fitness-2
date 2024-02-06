@@ -37,10 +37,10 @@ const Dashboard = () => {
       <section className="dashboard-overview">
         <h2>Dashboard</h2>
         <div className="dashboard-widgets">
-          <div className="progress-chart-container">
+          <div className="progress-chart-container dashboard-block">
             <ProgressChart className="progress-chart" />
           </div>
-          <div className="dashboard-friends">
+          <div className="dashboard-friends dashboard-block">
             {isLoading ? (
               <div>Loading friends...</div>
             ) : (

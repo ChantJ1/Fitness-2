@@ -3,7 +3,7 @@
 
 /* layout */
 :root {
-  --primary: #007bff; /* Changed to a nice shade of blue */
+  --primary: #0061c9; /* Changed to a nice shade of blue */
   --error: #dc3545; /* Updated to a more standard red */
 }
 body {
@@ -41,6 +41,15 @@ header a {
   grid-template-columns: 2fr 1fr; /* Adjusted to have two columns, with more space for the ProgressChart */
   gap: 20px; /* Adjust gap as needed */
   align-items: start; /* Align items at the start of each row */
+}
+
+.dashboard-block {
+  background: #fff;
+  border-radius: 4px;
+  margin: 20px 0; /* Adjust margin as needed */
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Slightly darker shadow for more depth */
 }
 
 /* Rest of the original CSS for homepage, workout details, form elements, etc., as provided */
