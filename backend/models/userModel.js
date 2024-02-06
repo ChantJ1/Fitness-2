@@ -13,12 +13,25 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    unique: true, // Ensuring username is unique
+    unique: true,
   },
   password: {
     type: String,
     required: true,
   },
+  // Adding fields for friends and friend requests
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  friendRequests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 // static signup method
@@ -36,7 +49,7 @@ userSchema.statics.signup = async function (email, username, password) {
     );
   }
 
-  // Adding validation for username, adjust according to your needs
+  // Adding validation for username
   if (
     !validator.isAlphanumeric(username, "en-US", { ignore: "_-" }) ||
     !validator.isLength(username, { min: 3, max: 30 })
@@ -58,8 +71,7 @@ userSchema.statics.signup = async function (email, username, password) {
   return user;
 };
 
-// static login method - Unchanged, but consider adding username login option
-// This is a conceptual example and needs to be adjusted to your specific backend logic
+// Adjusted static login method to accept an identifier
 userSchema.statics.login = async function (identifier, password) {
   let user;
   // Check if the identifier is an email
