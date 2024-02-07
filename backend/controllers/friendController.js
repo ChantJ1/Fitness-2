@@ -13,10 +13,25 @@ exports.sendFriendRequest = async (req, res) => {
 
   try {
     // Ensure both users exist
-    const senderExists = await User.findById(senderId);
-    const receiverExists = await User.findById(receiverId);
-    if (!senderExists || !receiverExists) {
+    const sender = await User.findById(senderId);
+    const receiver = await User.findById(receiverId);
+    if (!sender || !receiver) {
       return res.status(404).json({ error: "User not found." });
+    }
+
+    // Check if the sender has already sent a friend request or is already a friend
+    const isAlreadyFriend = receiver.friends.some((friend) =>
+      friend.equals(senderId)
+    );
+    const isRequestPending = receiver.friendRequests.some((request) =>
+      request.equals(senderId)
+    );
+    if (isAlreadyFriend || isRequestPending) {
+      return res
+        .status(400)
+        .json({
+          error: "Friend request already sent or user is already a friend.",
+        });
     }
 
     // Proceed with sending the friend request
@@ -26,7 +41,7 @@ exports.sendFriendRequest = async (req, res) => {
 
     res.status(200).json({ message: "Friend request sent successfully." });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -40,8 +55,6 @@ exports.acceptFriendRequest = async (req, res) => {
   }
 
   try {
-    // Additional checks can be added here if necessary
-
     // Move friendId from userId's friendRequests array to friends array
     await User.findByIdAndUpdate(userId, {
       $pull: { friendRequests: friendId },
@@ -81,21 +94,17 @@ exports.rejectFriendRequest = async (req, res) => {
 };
 
 // Function to get a user's friends
-// Function to get a user's friends
 exports.getFriends = async (req, res) => {
-  const userId = req.user._id; // Assuming you're using authentication middleware
+  const userId = req.user._id;
 
   try {
-    // Retrieve the user's friends based on their ID
     const user = await User.findById(userId).populate("friends");
 
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
 
-    // Extract the friends from the user object
     const friends = user.friends || [];
-
     res.status(200).json({ friends });
   } catch (error) {
     console.error(error);
