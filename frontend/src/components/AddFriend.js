@@ -1,45 +1,68 @@
 import React, { useState } from "react";
-import { useFriends } from "../hooks/useFriends"; // Corrected import
+import { useFriendContext } from "../context/FriendContext"; // Import useFriendContext hook
 
 const AddFriend = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  // Assuming useFriend hook returns a dispatch function among other values
-  const { dispatch } = useFriends();
+  const [searchResult, setSearchResult] = useState(null); // State to store search result
+  const { dispatch } = useFriendContext(); // Use useFriendContext hook to access the dispatch function
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Implement logic for searching or directly sending a friend request
-    console.log("Search term:", searchTerm);
-    // Example: Directly sending a friend request (adjust according to actual API and requirements)
+  const handleSearch = async () => {
     try {
-      const response = await fetch("/api/friends/send-request", {
-        // Adjust endpoint as necessary
-        method: "POST",
+      const authToken = localStorage.getItem("authToken"); // Retrieve token from local storage
+      const response = await fetch(`/api/users/search?query=${searchTerm}`, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          // Include auth token if required, assuming your auth context provides it
+          Authorization: `Bearer ${authToken}`, // Include the authentication token
         },
-        body: JSON.stringify({ searchTerm }), // Adjust the body as per your backend expectations
       });
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to send friend request");
+        throw new Error(data.message || "Failed to search for user");
       }
 
-      console.log("Friend request sent successfully:", data);
-      // Optionally, dispatch an action to update your app state/context
-      // dispatch({ type: 'SEND_FRIEND_REQUEST_SUCCESS', payload: data });
+      setSearchResult(data); // Set search result
+    } catch (error) {
+      console.error("Failed to search for user:", error.message);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const authToken = localStorage.getItem("authToken"); // Retrieve token from local storage
+      const userId = localStorage.getItem("userId"); // Retrieve userId from local storage or your auth context
+      const friendId = searchResult.id; // Extract friendId from search result
+      const response = await fetch("/api/friends/send-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`, // Include the authentication token
+        },
+        body: JSON.stringify({ userId, friendId }), // Send both userId and friendId
+      });
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          responseData.message || "Failed to send friend request"
+        );
+      }
+
+      console.log("Friend request sent successfully:", responseData);
+      // Dispatch action to add the friend to the state
+      dispatch({ type: "ADD_FRIEND", payload: responseData }); // Assuming responseData contains the newly added friend object
     } catch (error) {
       console.error("Failed to send friend request:", error.message);
-      // Handle sending friend request error
     }
 
-    setSearchTerm(""); // Reset search term post action
+    setSearchTerm("");
+    setSearchResult(null); // Reset search result after submission
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <h2>Add a Friend</h2>
       <input
         type="text"
@@ -47,9 +70,14 @@ const AddFriend = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button type="submit">Search</button>{" "}
-      {/* Adjust button text if it directly sends requests */}
-    </form>
+      <button onClick={handleSearch}>Search</button>
+      {searchResult && (
+        <div>
+          <p>Search result: {searchResult.username}</p>
+          <button onClick={handleSubmit}>Add Friend</button>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,14 +1,18 @@
 const express = require("express");
-
-// controller functions
-const { loginUser, signupUser } = require("../controllers/userController");
+const {
+  loginUser,
+  signupUser,
+  getUserProfile,
+} = require("../controllers/userController");
+const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
 
-// login route
+// Existing login and signup routes
 router.post("/login", loginUser);
-
-// signup route
 router.post("/signup", signupUser);
+
+// Add a new GET route for user profile, protected by requireAuth
+router.get("/profile", requireAuth, getUserProfile);
 
 module.exports = router;

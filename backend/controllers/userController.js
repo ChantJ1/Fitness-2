@@ -7,20 +7,22 @@ const createToken = (_id) => {
 
 // login a user
 const loginUser = async (req, res) => {
-  // Change 'email' to a more generic term like 'identifier' to reflect that it can be either an email or a username.
-  const { identifier, password } = req.body;
+  const { identifier, password } = req.body; // Change 'email' to 'identifier'
 
   try {
-    // Adjust the call to User.login to pass 'identifier' instead of 'email'
+    // Call User.login with 'identifier' instead of 'email'
     const user = await User.login(identifier, password);
 
     // Create a token
     const token = createToken(user._id);
 
-    // Consider returning the actual identifier used for login and the username for client-side usage
-    res
-      .status(200)
-      .json({ identifier: user.email, username: user.username, token });
+    // Return the user's email, username, and ID
+    res.status(200).json({
+      email: user.email,
+      username: user.username,
+      userId: user._id,
+      token,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -28,18 +30,69 @@ const loginUser = async (req, res) => {
 
 // signup a user
 const signupUser = async (req, res) => {
-  const { email, username, password } = req.body; // Include username in the request body
+  const { email, username, password } = req.body;
 
   try {
-    const user = await User.signup(email, username, password); // Pass username to the signup method
+    // Call User.signup with email, username, and password
+    const user = await User.signup(email, username, password);
 
-    // create a token
+    // Create a token
     const token = createToken(user._id);
 
-    res.status(200).json({ email, username, token }); // Return username along with email and token
+    // Return the user's email, username, and ID
+    res.status(200).json({
+      email: user.email,
+      username: user.username,
+      userId: user._id,
+      token,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-module.exports = { signupUser, loginUser };
+// Search users function
+const searchUsers = async (req, res) => {
+  const query = req.query.query; // Extracting 'query' parameter from query string
+  try {
+    // Flexible search for users by username or email using regex for partial match and case insensitivity
+    const users = await User.find({
+      $or: [
+        { username: { $regex: query, $options: "i" } }, // Case-insensitive regex search for username
+        { email: { $regex: query, $options: "i" } }, // Case-insensitive regex search for email
+      ],
+    }).select("username email _id"); // Only return username, email, and _id fields
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Function to get the authenticated user's profile
+// userController.js
+const getUserProfile = async (req, res) => {
+  const { username } = req.query; // Get the username from query parameters
+
+  try {
+    if (!username) {
+      return res
+        .status(400)
+        .json({ error: "Username query parameter is required." });
+    }
+
+    // Search for the user by username
+    const user = await User.findOne({ username }).select("username _id");
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // Return the found user's information
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
+
+module.exports = { signupUser, loginUser, searchUsers, getUserProfile };
