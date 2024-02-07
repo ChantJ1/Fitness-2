@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useFriendContext } from "../context/FriendContext"; // Import useFriendContext hook
+import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 
 const AddFriend = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState(null); // State to store search result
   const { dispatch } = useFriendContext(); // Use useFriendContext hook to access the dispatch function
+  const authContext = useContext(AuthContext); // Use useContext hook to access AuthContext
 
   const handleSearch = async () => {
     try {
-      const authToken = localStorage.getItem("authToken"); // Retrieve token from local storage
-      const response = await fetch(`/api/users/search?query=${searchTerm}`, {
+      const authToken = authContext.user.token; // Retrieve token from AuthContext
+      // Update the request URL to match the new endpoint and query parameter
+      const response = await fetch(`/api/user/profile?username=${searchTerm}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${authToken}`, // Include the authentication token
@@ -18,10 +21,10 @@ const AddFriend = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to search for user");
+        throw new Error(data.error || "Failed to search for user");
       }
 
-      setSearchResult(data); // Set search result
+      setSearchResult(data); // Set search result, assuming the API returns the user object directly
     } catch (error) {
       console.error("Failed to search for user:", error.message);
     }
@@ -31,23 +34,21 @@ const AddFriend = () => {
     e.preventDefault();
 
     try {
-      const authToken = localStorage.getItem("authToken"); // Retrieve token from local storage
-      const userId = localStorage.getItem("userId"); // Retrieve userId from local storage or your auth context
-      const friendId = searchResult.id; // Extract friendId from search result
+      const authToken = authContext.user.token; // Retrieve token from AuthContext
+      // No need to retrieve userId from local storage as the sender, since your backend should use the authenticated user's ID
+      const friendId = searchResult._id; // Extract friendId from search result
       const response = await fetch("/api/friends/send-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`, // Include the authentication token
         },
-        body: JSON.stringify({ userId, friendId }), // Send both userId and friendId
+        body: JSON.stringify({ friendId }), // Update to match the expected JSON format
       });
       const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          responseData.message || "Failed to send friend request"
-        );
+        throw new Error(responseData.error || "Failed to send friend request");
       }
 
       console.log("Friend request sent successfully:", responseData);
@@ -66,7 +67,7 @@ const AddFriend = () => {
       <h2>Add a Friend</h2>
       <input
         type="text"
-        placeholder="Enter username or email"
+        placeholder="Enter username"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
