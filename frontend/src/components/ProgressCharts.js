@@ -39,13 +39,11 @@ const ProgressChart = () => {
   useEffect(() => {
     if (workouts && workouts.length) {
       const formatDataForChart = () => {
-        // This assumes workouts are already sorted by date or you need to sort them as before
         const workoutsByDate = workouts.reduce((acc, workout) => {
-          const date = new Date(workout.createdAt).toDateString(); // Simplifies date to a readable format
+          const date = new Date(workout.createdAt).toISOString().slice(0, 10); // Use ISO string format for accurate sorting
           if (!acc[date]) {
             acc[date] = { totalLoad: 0, count: 0 };
           }
-          // Sum the load for all sets in the workout
           const totalLoad = workout.sets.reduce(
             (sum, set) => sum + set.load * set.reps,
             0
@@ -55,10 +53,12 @@ const ProgressChart = () => {
           return acc;
         }, {});
 
-        const labels = Object.keys(workoutsByDate);
-        const data = Object.values(workoutsByDate).map(
-          (item) => item.totalLoad
-        );
+        // Convert to arrays and sort by date descending
+        const entries = Object.entries(workoutsByDate).sort((b, a) =>
+          b[0].localeCompare(a[0])
+        ); // Sort dates in descending order
+        const labels = entries.map((entry) => entry[0]);
+        const data = entries.map((entry) => entry[1].totalLoad);
 
         setChartData({
           labels,
