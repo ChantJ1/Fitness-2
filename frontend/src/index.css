@@ -255,12 +255,14 @@ form button:hover {
 
 /* Error styling */
 div.error,
-input.error {
+input.error,
+.error {
   color: var(--error); /* Error text color */
   border-color: var(--error); /* Error border color for inputs */
 }
 
-div.error {
+div.error,
+.error {
   padding: 10px;
   background: #f8d7da; /* A lighter red for error backgrounds */
   border: 1px solid var(--error); /* Maintains error color for border */

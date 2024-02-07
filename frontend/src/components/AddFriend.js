@@ -86,8 +86,7 @@ const AddFriend = () => {
           </button>
         </div>
       )}
-      {error && <p style={{ color: "red" }}>{error}</p>}{" "}
-      {/* Display error message */}
+      {error && <p className="error">{error}</p>} {/* Display error message */}
     </div>
   );
 };
