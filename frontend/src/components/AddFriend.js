@@ -75,11 +75,15 @@ const AddFriend = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button className="form-button" onClick={handleSearch}>
+        Search
+      </button>
       {searchResult && (
         <div>
           <p>Search result: {searchResult.username}</p>
-          <button onClick={handleSubmit}>Add Friend</button>
+          <button className="form-button" onClick={handleSubmit}>
+            Add Friend
+          </button>
         </div>
       )}
       {error && <p style={{ color: "red" }}>{error}</p>}{" "}
