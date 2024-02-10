@@ -56,7 +56,9 @@ const AddFriend = () => {
       }
 
       console.log("Friend request sent successfully:", responseData);
-      dispatch({ type: "ADD_FRIEND", payload: responseData });
+      // Removed dispatch({ type: "ADD_FRIEND", payload: responseData });
+
+      // Optionally, you can dispatch another action here if you want to update the UI based on the sent request
     } catch (error) {
       console.error("Failed to send friend request:", error.message);
       setError(error.message); // Set error message

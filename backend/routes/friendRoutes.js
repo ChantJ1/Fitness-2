@@ -4,7 +4,8 @@ const {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
-  getFriends, // Add this import
+  getFriends,
+  getFriendRequests, // Add this import
 } = require("../controllers/friendController");
 const requireAuth = require("../middleware/requireAuth");
 
@@ -22,5 +23,8 @@ router.post("/reject-request", rejectFriendRequest);
 
 // New route to get user's friends
 router.get("/get-friends", getFriends); // Add this route
+
+// Route to get the current user's friend requests
+router.get("/get-friend-requests", getFriendRequests);
 
 module.exports = router;

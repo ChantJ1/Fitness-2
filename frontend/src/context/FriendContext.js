@@ -12,18 +12,14 @@ const friendReducer = (state, action) => {
     case "LOAD_FRIEND_REQUESTS":
       return { ...state, friendRequests: action.payload };
     case "ACCEPT_FRIEND_REQUEST":
-      return {
-        ...state,
-        friendRequests: state.friendRequests.filter(
-          (request) => request.id !== action.payload.id
-        ),
-        friends: [...state.friends, action.payload],
-      };
+      // No need to update state here, just reload friend list
+
+      return state;
     case "REJECT_FRIEND_REQUEST":
       return {
         ...state,
         friendRequests: state.friendRequests.filter(
-          (request) => request.id !== action.payload
+          (request) => request._id !== action.payload
         ),
       };
     default:
@@ -33,34 +29,26 @@ const friendReducer = (state, action) => {
 
 export const FriendContextProvider = ({ children }) => {
   const { user } = useAuthContext();
-
-  // Define your initial state here
   const initialState = {
-    friends: [], // Set initial state to an empty array
+    friends: [],
     friendRequests: [],
   };
-
-  // Use the initialState in useReducer
   const [state, dispatch] = useReducer(friendReducer, initialState);
 
-  // Example function to load friends from the backend
   useEffect(() => {
     const loadFriends = async () => {
       if (user) {
         try {
-          // Fetch friends from the backend API
           const response = await fetch("/api/friends/get-friends", {
             headers: {
               Authorization: `Bearer ${user.token}`,
             },
           });
-
           if (!response.ok) {
             throw new Error("Failed to fetch friends data");
           }
-
           const data = await response.json();
-          dispatch({ type: "LOAD_FRIENDS", payload: data.friends }); // Ensure "data.friends" is an array
+          dispatch({ type: "LOAD_FRIENDS", payload: data.friends });
         } catch (error) {
           console.error("Error fetching friends:", error);
         }
@@ -68,7 +56,7 @@ export const FriendContextProvider = ({ children }) => {
     };
 
     loadFriends();
-  }, [user]);
+  }, [user, state.friendRequests.length]); // Re-fetch friends when the number of friend requests changes
 
   return (
     <FriendContext.Provider value={{ ...state, dispatch }}>
@@ -77,14 +65,4 @@ export const FriendContextProvider = ({ children }) => {
   );
 };
 
-export const useFriendContext = () => {
-  const context = useContext(FriendContext);
-
-  if (context === undefined) {
-    throw new Error(
-      "useFriendContext must be used within a FriendContextProvider"
-    );
-  }
-
-  return context;
-};
+export const useFriendContext = () => useContext(FriendContext);

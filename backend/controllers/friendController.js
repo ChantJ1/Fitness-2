@@ -27,11 +27,9 @@ exports.sendFriendRequest = async (req, res) => {
       request.equals(senderId)
     );
     if (isAlreadyFriend || isRequestPending) {
-      return res
-        .status(400)
-        .json({
-          error: "Friend request already sent or user is already a friend.",
-        });
+      return res.status(400).json({
+        error: "Friend request already sent or user is already a friend.",
+      });
     }
 
     // Proceed with sending the friend request
@@ -106,6 +104,36 @@ exports.getFriends = async (req, res) => {
 
     const friends = user.friends || [];
     res.status(200).json({ friends });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
+
+// Function to get the authenticated user's friend requests
+exports.getFriendRequests = async (req, res) => {
+  const userId = req.user._id; // The ID is obtained from the authenticated user
+
+  try {
+    // Fetch the user along with their friend requests
+    // Note: Adjust the 'populate' method according to your needs
+    const user = await User.findById(userId).populate({
+      path: "friendRequests",
+      select: "username email", // Assuming you want to return the username and email of the requester
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // You might want to transform the data or directly send the populated array
+    const friendRequests = user.friendRequests.map((request) => ({
+      id: request._id,
+      username: request.username,
+      email: request.email,
+    }));
+
+    res.status(200).json({ friendRequests });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error." });
