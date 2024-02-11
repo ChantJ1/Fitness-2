@@ -27,4 +27,7 @@ router.get("/get-friends", getFriends); // Add this route
 // Route to get the current user's friend requests
 router.get("/get-friend-requests", getFriendRequests);
 
+// Need to add a delete friend route
+// route.get("/delete-friend", deleteFriend)
+
 module.exports = router;

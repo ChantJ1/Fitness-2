@@ -32,6 +32,12 @@ const userSchema = new Schema({
       ref: "User",
     },
   ],
+  // Gym status for setting whether going to gym or not
+  gymStatus: {
+    going: { type: Boolean, default: false },
+    date: { type: Date, default: Date.now },
+    // 2024-02-10T00:00:00.000+00:00 date format for json
+  },
 });
 
 // static signup method

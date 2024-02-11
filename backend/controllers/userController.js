@@ -95,4 +95,53 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, loginUser, searchUsers, getUserProfile };
+// Function to update gym status
+const updateGymStatus = async (req, res) => {
+  const { going, date } = req.body; // Expecting 'going' as boolean, 'date' as date string
+  const userId = req.user._id; // Assuming you're using some auth middleware to set req.user
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    user.gymStatus.going = going;
+    user.gymStatus.date = new Date(date);
+    await user.save();
+
+    res.status(200).json({ message: "Gym status updated successfully." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Function to clear gym status
+const clearGymStatus = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    user.gymStatus.going = false;
+    // Optionally clear the date or set it to the current date
+    user.gymStatus.date = Date.now();
+    await user.save();
+
+    res.status(200).json({ message: "Gym status cleared successfully." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// At the bottom of userController.js
+module.exports = {
+  signupUser,
+  loginUser,
+  getUserProfile,
+  updateGymStatus,
+  clearGymStatus,
+};
