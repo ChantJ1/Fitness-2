@@ -1,4 +1,1 @@
-# mernFitnessAuth
-# Fitness-2
-# Fitness-2
-# Fitness-2
+# Mern Full stack Fitness App with Auth implementation
